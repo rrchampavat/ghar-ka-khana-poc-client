@@ -1,6 +1,6 @@
+import AuthLayout from "@/layouts/Auth";
 import { createBrowserRouter } from "react-router-dom";
 import { Login, NotFound, ServerError, SignUp } from "./lazyLoading";
-import AuthLayout from "@/layouts/Auth";
 
 const routes = createBrowserRouter([
   // {

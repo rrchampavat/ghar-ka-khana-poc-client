@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { type SpinnerProps, Spinner as NextUISpinner } from "@nextui-org/react";
+import { type SpinnerProps, Spinner as NextUISpinner } from "@heroui/react";
 
 const Spinner = (props: SpinnerProps) => {
   const {

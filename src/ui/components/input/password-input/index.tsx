@@ -1,7 +1,7 @@
+import type { InputProps } from "@heroui/react";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Input from "..";
-import { Eye, EyeOff } from "lucide-react";
-import type { InputProps } from "@nextui-org/react";
 
 const PasswordInput = (props: InputProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -19,9 +19,9 @@ const PasswordInput = (props: InputProps) => {
           onClick={toggleVisibility}
         >
           {isVisible ? (
-            <EyeOff className="pointer-events-none text-2xl text-default-400" />
+            <EyeOff className="text-default-400 pointer-events-none text-2xl" />
           ) : (
-            <Eye className="pointer-events-none text-2xl text-default-400" />
+            <Eye className="text-default-400 pointer-events-none text-2xl" />
           )}
         </button>
       }

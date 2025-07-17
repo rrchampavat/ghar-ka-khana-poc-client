@@ -10,7 +10,7 @@
     "sourceType": "module",
     "project": ["./tsconfig.json"]
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "@stylistic"],
   "rules": {
     "indent": ["error", 2],
     "no-console": "error",
@@ -46,11 +46,11 @@
     "@typescript-eslint/no-explicit-any": "off",
     "linebreak-style": "off",
     "quotes": ["error", "double"],
-    "semi": ["error", "always"],
+    "@stylistic/semi": ["error", "always"],
     "default-case": "error",
     "use-isnan": "error",
     "no-else-return": "error",
-    "@typescript-eslint/semi": ["error", "always"],
+    // "@typescript-eslint/semi": ["error", "always"],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/naming-convention": [
       "error",

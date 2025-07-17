@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Button as NextUIButton, type ButtonProps } from "@nextui-org/react";
+import { Button as NextUIButton, type ButtonProps } from "@heroui/react";
 
 const Button = (props: ButtonProps) => {
   const {
