@@ -1,7 +1,7 @@
 import { register } from "@/services/auth/register";
 import registerSchema from "@/shared/validation-schemas/auth/register";
 import Button from "@/ui/components/button";
-import Input from "@/ui/components/input";
+// import Input from "@/ui/components/input";
 import PasswordInput from "@/ui/components/input/password-input";
 import Link from "@/ui/components/link";
 import {
@@ -9,6 +9,7 @@ import {
   TypographyLead,
   TypographyP
 } from "@/ui/components/typography";
+import { Input } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Cookies from "js-cookie";
 import { useState } from "react";
@@ -74,7 +75,6 @@ const RegisterForm = () => {
               type="text"
               label="First name"
               errorMessage={formState.errors.firstName?.message}
-              variant="faded"
               className="w-full"
               {...field}
             />
