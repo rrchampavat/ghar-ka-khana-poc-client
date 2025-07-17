@@ -1,19 +1,19 @@
+import { login } from "@/services/auth/login";
+import loginSchema from "@/shared/validation-schemas/auth/login";
 import Button from "@/ui/components/button";
 import Input from "@/ui/components/input";
 import PasswordInput from "@/ui/components/input/password-input";
+import Link from "@/ui/components/link";
 import {
   TypographyH1,
   TypographyLead,
   TypographyP
 } from "@/ui/components/typography";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import loginSchema from "@/shared/validation-schemas/auth/login";
-import { login } from "@/services/auth/login";
 import Cookies from "js-cookie";
-import Link from "@/ui/components/link";
+import { useState } from "react";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const initialLoginValues: LOGIN_PAYLOAD = {
   emailOrContact: "",

@@ -1,5 +1,5 @@
-import RegisterImage from "./components/register-image";
 import RegisterForm from "./components/register-form";
+import RegisterImage from "./components/register-image";
 
 const Register = () => {
   return (

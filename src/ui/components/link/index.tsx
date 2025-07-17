@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Link as NextUILink, type LinkProps } from "@nextui-org/react";
+import { Link as NextUILink, type LinkProps } from "@heroui/react";
 
 const Link = (props: LinkProps) => {
   const {

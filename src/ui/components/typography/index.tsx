@@ -106,7 +106,7 @@ export const TypographySmall = (props: TYPOGRAPHY_PROPS) => {
   const { children, className } = props;
 
   return (
-    <small className={cn("text-sm font-medium leading-none", className)}>
+    <small className={cn("text-sm leading-none font-medium", className)}>
       {children}
     </small>
   );

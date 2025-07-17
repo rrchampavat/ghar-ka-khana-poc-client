@@ -1,7 +1,7 @@
 import {
   ButtonGroup as NextUIButtonGroup,
   type ButtonGroupProps
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 const ButtonGroup = (props: ButtonGroupProps) => {
   const {

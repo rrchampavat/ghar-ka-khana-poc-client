@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Input as NextUIInput, type InputProps } from "@nextui-org/react";
+import { Input as NextUIInput, type InputProps } from "@heroui/react";
 
 const Input = (props: InputProps) => {
   const {

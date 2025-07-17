@@ -10,11 +10,11 @@ import {
   TypographyP
 } from "@/ui/components/typography";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Cookies from "js-cookie";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import type { InferType } from "yup";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import type { InferType } from "yup";
 
 type REGISTER_SCHEMA = InferType<typeof registerSchema>;
 
@@ -74,6 +74,8 @@ const RegisterForm = () => {
               type="text"
               label="First name"
               errorMessage={formState.errors.firstName?.message}
+              variant="faded"
+              className="w-full"
               {...field}
             />
           )}
@@ -86,6 +88,7 @@ const RegisterForm = () => {
             <Input
               type="text"
               label="Last name"
+              className="w-full"
               errorMessage={formState.errors.lastName?.message}
               {...field}
             />
@@ -99,6 +102,7 @@ const RegisterForm = () => {
             <Input
               type="email"
               label="Email address"
+              className="w-full"
               errorMessage={formState.errors.email?.message}
               {...field}
             />
@@ -112,6 +116,7 @@ const RegisterForm = () => {
             <Input
               type="text"
               label="Contact number"
+              className="w-full"
               errorMessage={formState.errors.contactNo?.message}
               {...field}
             />
@@ -124,7 +129,7 @@ const RegisterForm = () => {
           render={({ field, formState }) => (
             <PasswordInput
               label="Password"
-              className="mb-5"
+              className="mb-5 w-full"
               errorMessage={formState.errors.password?.message}
               {...field}
             />
