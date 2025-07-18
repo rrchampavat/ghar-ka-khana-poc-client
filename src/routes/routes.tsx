@@ -1,4 +1,4 @@
-import AuthLayout from "@/layouts/Auth";
+import AuthLayout from "@/layouts/Auth/AuthLayout";
 import { createBrowserRouter } from "react-router-dom";
 import { Login, NotFound, ServerError, SignUp } from "./lazyLoading";
 

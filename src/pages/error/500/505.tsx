@@ -1,5 +1,8 @@
-import Button from "@/ui/components/button";
-import { TypographyH1, TypographyH4 } from "@/ui/components/typography";
+import Button from "@/ui/components/button/Button";
+import {
+  TypographyH1,
+  TypographyH4
+} from "@/ui/components/typography/Typography";
 import { useNavigate } from "react-router-dom";
 
 const ServerError = () => {

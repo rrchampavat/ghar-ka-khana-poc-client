@@ -4,7 +4,7 @@ import useDarkMode from "use-dark-mode";
 import "./App.css";
 import Providers from "./providers";
 import routes from "./routes/routes";
-import Fallback from "./ui/layouts/fallback";
+import Fallback from "./ui/layouts/fallback/Fallback";
 
 function App() {
   const { value: isDarkMode } = useDarkMode(false);

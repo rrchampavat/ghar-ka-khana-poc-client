@@ -1,7 +1,7 @@
 import type { InputProps } from "@heroui/react";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import Input from "..";
+import Input from "../Input";
 
 const PasswordInput = (props: InputProps) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);

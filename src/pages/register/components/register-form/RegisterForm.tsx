@@ -1,15 +1,15 @@
 import { register } from "@/services/auth/register";
 import registerSchema from "@/shared/validation-schemas/auth/register";
-import Button from "@/ui/components/button";
-import Input from "@/ui/components/input";
+import Button from "@/ui/components/button/Button";
+import Input from "@/ui/components/input/Input";
 // import Input from "@/ui/components/input";
-import PasswordInput from "@/ui/components/input/password-input";
-import Link from "@/ui/components/link";
+import PasswordInput from "@/ui/components/input/password-input/PasswordInput";
+import Link from "@/ui/components/link/Link";
 import {
   TypographyH1,
   TypographyLead,
   TypographyP
-} from "@/ui/components/typography";
+} from "@/ui/components/typography/Typography";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Cookies from "js-cookie";
 import { useState } from "react";

@@ -1,4 +1,4 @@
-import Spinner from "@/ui/components/spinner";
+import Spinner from "@/ui/components/spinner/Spinner";
 
 const Fallback = () => {
   return (

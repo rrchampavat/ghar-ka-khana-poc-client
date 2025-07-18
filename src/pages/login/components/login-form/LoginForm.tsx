@@ -1,14 +1,14 @@
 import { login } from "@/services/auth/login";
 import loginSchema from "@/shared/validation-schemas/auth/login";
-import Button from "@/ui/components/button";
-import Input from "@/ui/components/input";
-import PasswordInput from "@/ui/components/input/password-input";
-import Link from "@/ui/components/link";
+import Button from "@/ui/components/button/Button";
+import Input from "@/ui/components/input/Input";
+import PasswordInput from "@/ui/components/input/password-input/PasswordInput";
+import Link from "@/ui/components/link/Link";
 import {
   TypographyH1,
   TypographyLead,
   TypographyP
-} from "@/ui/components/typography";
+} from "@/ui/components/typography/Typography";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Cookies from "js-cookie";
 import { useState } from "react";
