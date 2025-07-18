@@ -64,6 +64,7 @@ const LoginForm = () => {
             <Input
               type="text"
               label="Email or Contact number"
+              className="w-full"
               errorMessage={formState.errors.emailOrContact?.message}
               {...field}
             />
@@ -75,7 +76,7 @@ const LoginForm = () => {
           control={control}
           render={({ field, formState }) => (
             <PasswordInput
-              className="mb-5"
+              className="mb-5 w-full"
               errorMessage={formState.errors.password?.message}
               {...field}
             />

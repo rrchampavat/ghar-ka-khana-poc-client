@@ -5,7 +5,7 @@ const Input = (props: InputProps) => {
   const {
     type = "text",
     label,
-    variant = "underlined",
+    variant = "flat",
     color = "default",
     size = "md",
     radius = "sm",

@@ -12,6 +12,7 @@ const PasswordInput = (props: InputProps) => {
     <Input
       type={isVisible ? "text" : "password"}
       label="Password"
+      variant="flat"
       endContent={
         <button
           className="focus:outline-none"
