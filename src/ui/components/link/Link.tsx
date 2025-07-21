@@ -5,9 +5,9 @@ const Link = (props: LinkProps) => {
   const {
     children,
     size = "md",
-    color = "foreground",
-    underline = "always",
-    href,
+    color = "primary",
+    underline = "hover",
+    href = "",
     target = "_self",
     rel, // ? The relationship between the linked resource and the current page.
     download = false,

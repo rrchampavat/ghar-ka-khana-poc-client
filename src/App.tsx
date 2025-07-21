@@ -12,7 +12,7 @@ function App() {
   return (
     <Providers>
       <main
-        className={`${isDarkMode ? "dark" : ""} bg-background text-foreground`}
+        className={`${isDarkMode ? "dark" : ""} bg-background text-foreground h-screen`}
       >
         <Suspense fallback={<Fallback />}>
           <RouterProvider router={routes} />

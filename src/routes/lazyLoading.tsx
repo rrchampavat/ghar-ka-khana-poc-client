@@ -7,3 +7,6 @@ export const SignUp = lazy(() => import("../pages/register/Register"));
 // ERROR
 export const NotFound = lazy(() => import("../pages/error/404/404"));
 export const ServerError = lazy(() => import("../pages/error/500/505"));
+
+// MAIN
+export const Home = lazy(() => import("../pages/home/Home"));

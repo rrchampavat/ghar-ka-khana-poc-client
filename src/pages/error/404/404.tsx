@@ -9,7 +9,7 @@ const NotFoundImage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center space-y-3">
+    <div className="flex h-full flex-col items-center justify-center space-y-3">
       <TypographyH1>404</TypographyH1>
       <TypographyH4>
         Oops! The page you're looking for does not exist.

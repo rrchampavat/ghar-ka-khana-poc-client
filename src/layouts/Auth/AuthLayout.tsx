@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
-  const isAuthenticated = !!Cookies.get("accessToken");
+  const isAuthenticated = Boolean(Cookies.get("accessToken"));
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
