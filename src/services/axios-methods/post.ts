@@ -63,8 +63,7 @@ const post = async (
     addToast({
       title: errorTitle,
       description: errorMessage,
-      color: "danger",
-      shouldShowTimeoutProgress: true
+      color: "danger"
     });
 
     throw new Error(error?.response?.data?.message);

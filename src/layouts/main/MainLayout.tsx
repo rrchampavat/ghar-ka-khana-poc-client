@@ -12,7 +12,7 @@ const MainLayout = () => {
   return (
     <>
       <Header />
-      <div className="container mx-auto h-[calc(100vh-65px)] px-4">
+      <div className="container mx-auto h-[calc(100vh-65px)] p-4">
         <Outlet />
       </div>
     </>

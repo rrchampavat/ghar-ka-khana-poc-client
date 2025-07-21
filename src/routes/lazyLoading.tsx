@@ -10,3 +10,8 @@ export const ServerError = lazy(() => import("../pages/error/500/505"));
 
 // MAIN
 export const Home = lazy(() => import("../pages/home/Home"));
+
+// USER
+export const UserDetails = lazy(
+  () => import("../pages/user-details/UserDetails.tsx")
+);

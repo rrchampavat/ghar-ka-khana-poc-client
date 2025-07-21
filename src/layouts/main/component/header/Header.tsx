@@ -1,7 +1,8 @@
 import useLocalStorage from "@/hooks/useLocalStoage";
 import getUserById from "@/services/user/getUserById";
-import Avatar from "@/ui/components/avatar/Avatar";
+import { USER_ROLE } from "@/shared/constants/enums";
 import Link from "@/ui/components/link/Link";
+import User from "@/ui/components/user/User";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
 import {
   Dropdown,
@@ -51,8 +52,9 @@ const Header = () => {
   const dropDownItems: DROPDOWN_ITEM[] = [
     {
       key: "info",
-      label: "User Info",
-      color: "primary"
+      label: "My profile",
+      color: "primary",
+      onAction: () => navigate(`/users/${loggedUser.id}`)
     },
     {
       key: "logout",
@@ -119,10 +121,15 @@ const Header = () => {
         <NavbarItem>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
-              <Avatar
-                as="button"
+              <User
                 name={`${loggedUser?.first_name} ${loggedUser?.last_name}`}
-                src={loggedUser?.user_image}
+                description={USER_ROLE[loggedUser?.role]}
+                avatarProps={{
+                  src: loggedUser?.user_image,
+                  as: "button",
+                  name: `${loggedUser?.first_name} ${loggedUser?.last_name}`
+                }}
+                className="cursor-pointer"
               />
             </DropdownTrigger>
 

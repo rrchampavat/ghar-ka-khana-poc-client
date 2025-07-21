@@ -27,7 +27,12 @@ const Providers = ({ children }: { children: ReactNode }) => {
 
   return (
     <HeroUIProvider>
-      <ToastProvider />
+      <ToastProvider
+        toastProps={{
+          variant: "solid",
+          timeout: 5000
+        }}
+      />
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </HeroUIProvider>
   );

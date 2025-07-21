@@ -10,6 +10,7 @@ import {
   TypographyLead,
   TypographyP
 } from "@/ui/components/typography/Typography";
+import { Form } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -49,7 +50,10 @@ const RegisterForm = () => {
 
       <TypographyLead>Your goto online tiffin service.</TypographyLead>
 
-      <form className="my-10 flex flex-col items-center space-y-3">
+      <Form
+        className="my-10 flex flex-col items-center space-y-3"
+        onSubmit={handleSubmit(handleRegister)}
+      >
         <Controller
           name="firstName"
           control={control}
@@ -119,14 +123,10 @@ const RegisterForm = () => {
           )}
         />
 
-        <Button
-          className="!mt-6 w-fit"
-          onClick={handleSubmit(handleRegister)}
-          isLoading={isPending}
-        >
+        <Button className="!mt-6 w-fit" isLoading={isPending} type="submit">
           Sign up
         </Button>
-      </form>
+      </Form>
 
       <div className="flex justify-between space-x-3">
         <TypographyP>Already registered with us?</TypographyP>
