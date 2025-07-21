@@ -1,3 +1,5 @@
+import useLocalStorage from "@/hooks/useLocalStoage";
+import getUserById from "@/services/user/getUserById";
 import Avatar from "@/ui/components/avatar/Avatar";
 import Link from "@/ui/components/link/Link";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
@@ -8,6 +10,7 @@ import {
   DropdownTrigger,
   Image
 } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDarkMode from "use-dark-mode";
@@ -28,6 +31,8 @@ interface DROPDOWN_ITEM {
 
 const Header = () => {
   const { value: isDarkMode } = useDarkMode(false);
+
+  const [lclUser] = useLocalStorage("user", {});
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -75,6 +80,14 @@ const Header = () => {
     }
   ];
 
+  const { data } = useQuery({
+    queryKey: ["user-details", lclUser.id],
+    queryFn: () => getUserById(lclUser.id),
+    enabled: !lclUser.id
+  });
+
+  const loggedUser = lclUser?.id ? lclUser : data;
+
   return (
     <Navbar className="shadow-lg">
       <NavbarBrand>
@@ -95,7 +108,6 @@ const Header = () => {
               href={item.href}
               color={item.isActive ? "primary" : "foreground"}
               underline={item.isActive ? "always" : "hover"}
-              target="_blank"
             >
               {item.label}
             </Link>
@@ -104,10 +116,14 @@ const Header = () => {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
+        <NavbarItem>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
-              <Avatar as="button" name="John Doe" />
+              <Avatar
+                as="button"
+                name={`${loggedUser?.first_name} ${loggedUser?.last_name}`}
+                src={loggedUser?.user_image}
+              />
             </DropdownTrigger>
 
             <DropdownMenu>

@@ -10,8 +10,7 @@ import {
   TypographyP
 } from "@/ui/components/typography/Typography";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Cookies from "js-cookie";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +21,6 @@ const initialLoginValues: LOGIN_PAYLOAD = {
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { handleSubmit, control } = useForm<LOGIN_PAYLOAD>({
     resolver: yupResolver(loginSchema),
@@ -30,25 +28,15 @@ const LoginForm = () => {
     mode: "onSubmit"
   });
 
-  const handleLogin: SubmitHandler<LOGIN_PAYLOAD> = async (values) => {
-    try {
-      setIsLoading(true);
-
-      const response = await login(values);
-
-      const { data, success: isSuccess } = response;
-
-      if (isSuccess) {
-        Cookies.set("accessToken", data.accessToken);
-
-        navigate("/");
-      }
-    } catch (error: any) {
-      throw new Error(error?.message);
-    } finally {
-      setIsLoading(false);
+  const { mutate: loginMutation, isPending } = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      navigate("/");
     }
-  };
+  });
+
+  const handleLogin: SubmitHandler<LOGIN_PAYLOAD> = (values) =>
+    loginMutation(values);
 
   return (
     <section className="mx-auto my-auto px-4 md:border-l-1 lg:px-12 xl:px-20">
@@ -85,7 +73,7 @@ const LoginForm = () => {
 
         <Button
           onClick={handleSubmit(handleLogin)}
-          isLoading={isLoading}
+          isLoading={isPending}
           className="!mt-6 w-fit"
         >
           Login

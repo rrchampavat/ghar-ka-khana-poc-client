@@ -11,8 +11,7 @@ import {
   TypographyP
 } from "@/ui/components/typography/Typography";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Cookies from "js-cookie";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import type { InferType } from "yup";
@@ -29,7 +28,6 @@ const initialRegisterValues: REGISTER_SCHEMA = {
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { handleSubmit, control } = useForm<REGISTER_SCHEMA>({
     resolver: yupResolver(registerSchema),
@@ -37,28 +35,13 @@ const RegisterForm = () => {
     mode: "onSubmit"
   });
 
-  const handleRegister: SubmitHandler<REGISTER_SCHEMA> = async (values) => {
-    try {
-      setIsLoading(true);
+  const { mutate: registerMutation, isPending } = useMutation({
+    mutationFn: register,
+    onSuccess: () => navigate("/")
+  });
 
-      const response = await register({
-        ...values,
-        contactNo: Number(values.contactNo)
-      });
-
-      const { data, success: isSuccess } = response;
-
-      if (isSuccess) {
-        Cookies.set("accessToken", data.accessToken);
-
-        navigate("/");
-      }
-    } catch (error: any) {
-      throw new Error(error?.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleRegister: SubmitHandler<REGISTER_SCHEMA> = (values) =>
+    registerMutation(values);
 
   return (
     <section className="mx-auto my-auto px-4 md:border-l-1 lg:px-12 xl:px-20">
@@ -139,7 +122,7 @@ const RegisterForm = () => {
         <Button
           className="!mt-6 w-fit"
           onClick={handleSubmit(handleRegister)}
-          isLoading={isLoading}
+          isLoading={isPending}
         >
           Sign up
         </Button>

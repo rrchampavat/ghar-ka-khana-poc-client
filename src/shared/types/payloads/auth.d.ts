@@ -7,6 +7,6 @@ type REGISTER_PAYLOAD = {
   firstName: string;
   lastName: string;
   email: string;
-  contactNo: number;
+  contactNo: string;
   password: string;
 };

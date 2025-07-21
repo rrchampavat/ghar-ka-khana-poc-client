@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { SERVER_URL } from "@/shared/constants/envVars";
 import { addToast } from "@heroui/toast";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import Cookies from "js-cookie";
 
-const post = async (
+const get = async (
   API_ROUTE: string,
-  payload: { [key: string]: string | number }
+  PARAMS: { [key: string]: string | number } = {}
 ): Promise<any> => {
   try {
     const accessToken = Cookies.get("accessToken");
 
-    const REQ_URL = SERVER_URL + API_ROUTE;
-
-    const response = await axios.post(REQ_URL, payload, {
-      method: "post",
-      allowAbsoluteUrls: true,
+    const response: AxiosResponse<any, any> = await axios.get(API_ROUTE, {
+      method: "get",
+      baseURL: SERVER_URL,
+      allowAbsoluteUrls: false,
       headers: {
-        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
         authorization: `Bearer ${accessToken}`
       },
-      timeout: 10000,
+      params: PARAMS,
+      // timeout: 10000,
       withCredentials: false,
       responseType: "json",
-      validateStatus: (status: number) => status >= 200 && status < 300,
+      // validateStatus: (status) => status >= 200 && status < 300,
       maxRedirects: 21
     });
 
@@ -52,6 +52,7 @@ const post = async (
       Cookies.remove("accessToken");
       window.location.href = "/login";
     }
+
     const isNetworkError = !error.response;
 
     const errorTitle = isNetworkError ? "Network Error!" : "Request Error!";
@@ -71,4 +72,4 @@ const post = async (
   }
 };
 
-export default post;
+export default get;
