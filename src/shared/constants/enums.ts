@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-export const USER_ROLE = {
+export const USER_ROLE: { [key: string | number]: string | number } = {
   1: "Admin",
   2: "Cook",
   3: "Delivery",

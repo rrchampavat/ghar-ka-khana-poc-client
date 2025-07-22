@@ -15,3 +15,4 @@ export const Home = lazy(() => import("../pages/home/Home"));
 export const UserDetails = lazy(
   () => import("../pages/user-details/UserDetails.tsx")
 );
+export const Users = lazy(() => import("../pages/users/Users.tsx"));

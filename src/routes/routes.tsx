@@ -7,7 +7,8 @@ import {
   NotFound,
   ServerError,
   SignUp,
-  UserDetails
+  UserDetails,
+  Users
 } from "./lazyLoading";
 
 const routes = createBrowserRouter([
@@ -20,6 +21,10 @@ const routes = createBrowserRouter([
       {
         path: "/users/:userID",
         element: <UserDetails />
+      },
+      {
+        path: "/users",
+        element: <Users />
       }
     ]
   },
