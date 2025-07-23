@@ -11,13 +11,14 @@ const Users = () => {
     sortBy: "",
     sortOrder: "asc"
   });
+  const [pageSize, setPageSize] = useState<number>(0);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["user-list", currPage, sort.sortBy, sort.sortOrder],
+    queryKey: ["user-list", currPage, sort.sortBy, sort.sortOrder, pageSize],
     queryFn: () =>
       getUsers({
         page: currPage,
-        limit: 10,
+        limit: pageSize,
         sortBy: sort.sortBy as string,
         sortOrder: sort.sortOrder
       }),
@@ -38,7 +39,8 @@ const Users = () => {
         contact_no: user.contact_no,
         role: USER_ROLE[user.role]
       }))
-    })
+    }),
+    enabled: Boolean(pageSize)
   });
 
   return (
@@ -57,7 +59,8 @@ const Users = () => {
       paginationProps={{
         page: currPage,
         setPage: setCurrPage,
-        totalPages: data?.totalPages
+        totalPages: data?.totalPages,
+        setPageSize: setPageSize
       }}
       rows={data?.data}
       tableBodyProps={{
