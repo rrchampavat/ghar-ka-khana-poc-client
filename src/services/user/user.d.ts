@@ -17,5 +17,13 @@ type USER_RESPONSE = {
 type USER_LIST_RESPONSE = {
   message: string;
   success: boolean;
-  data: USER[];
+  data: {
+    data: USER[];
+    limit: number;
+    page: number;
+    total: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
+  };
 };

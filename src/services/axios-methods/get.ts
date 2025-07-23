@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 const get = async (
   API_ROUTE: string,
-  PARAMS: { [key: string]: string | number } = {}
+  PARAMS: QUERY_PARAMS = {}
 ): Promise<any> => {
   try {
     const accessToken = Cookies.get("accessToken");
