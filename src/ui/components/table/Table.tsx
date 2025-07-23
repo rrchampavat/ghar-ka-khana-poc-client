@@ -84,9 +84,9 @@ const Table = (props: TableProps) => {
   } = props;
 
   const {
-    page = 1,
+    page,
     setPage = () => ({}),
-    totalPages = 1,
+    totalPages,
     setPageSize = () => ({})
   } = paginationProps;
 
@@ -95,12 +95,16 @@ const Table = (props: TableProps) => {
   // Set page size on render
   useEffect(() => setPageSize(lclPageSize), []);
 
+  useEffect(() => {
+    // Redirect to last page if current page no is greater total pages
+    if (totalPages && page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [totalPages]);
+
   const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPageSize(parseInt(e.target.value));
     setLclPageSize(parseInt(e.target.value));
-
-    // Set page number to 1 when page size changes
-    setPage(1);
   };
 
   return (
@@ -114,21 +118,21 @@ const Table = (props: TableProps) => {
       bottomContent={
         // ? Below logic makes the pagination disappear when loading
         // ? Need to fix it
-        totalPages > 1 && (
+        !tableBodyProps?.isLoading && (
           <div className="flex w-full justify-end gap-3">
             <Pagination
               isCompact
               showControls
               showShadow
               color="primary"
-              page={page}
-              total={totalPages}
+              page={page || 1}
+              total={totalPages || 1}
               onChange={setPage}
               isDisabled={tableBodyProps?.isLoading}
             />
 
             <Select
-              className="max-w-30"
+              className="max-w-31"
               items={PAGE_SIZE_OPTIONS}
               defaultSelectedKeys={[`${lclPageSize}`]}
               onChange={handlePageSizeChange}
