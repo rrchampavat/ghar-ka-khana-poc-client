@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const useLocalStorage = (
   key: string,
-  initialValue?: { [key: string]: string | number }
+  initialValue?: OBJECT
 ): [
   storedValue: any,
   setValue: (value: any) => void,

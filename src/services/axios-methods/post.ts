@@ -4,10 +4,7 @@ import { addToast } from "@heroui/toast";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const post = async (
-  API_ROUTE: string,
-  payload: { [key: string]: string | number }
-): Promise<any> => {
+const post = async (API_ROUTE: string, payload: OBJECT): Promise<any> => {
   try {
     const accessToken = Cookies.get("accessToken");
 

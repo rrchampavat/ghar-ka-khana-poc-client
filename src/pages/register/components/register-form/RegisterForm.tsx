@@ -1,5 +1,7 @@
-import { register } from "@/services/auth/register";
-import registerSchema from "@/shared/validation-schemas/auth/register";
+import { register } from "@/services/auth/register.service";
+import registerSchema, {
+  type REGISTER_PAYLOAD
+} from "@/shared/validation-schemas/auth/register.schema";
 import Button from "@/ui/components/button/Button";
 import Input from "@/ui/components/input/Input";
 // import Input from "@/ui/components/input";
@@ -15,11 +17,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import type { InferType } from "yup";
 
-type REGISTER_SCHEMA = InferType<typeof registerSchema>;
-
-const initialRegisterValues: REGISTER_SCHEMA = {
+const initialRegisterValues: REGISTER_PAYLOAD = {
   firstName: "",
   lastName: "",
   contactNo: "",
@@ -30,7 +29,7 @@ const initialRegisterValues: REGISTER_SCHEMA = {
 const RegisterForm = () => {
   const navigate = useNavigate();
 
-  const { handleSubmit, control } = useForm<REGISTER_SCHEMA>({
+  const { handleSubmit, control } = useForm<REGISTER_PAYLOAD>({
     resolver: yupResolver(registerSchema),
     defaultValues: initialRegisterValues,
     mode: "onSubmit"
@@ -41,15 +40,13 @@ const RegisterForm = () => {
     onSuccess: () => navigate("/")
   });
 
-  const handleRegister: SubmitHandler<REGISTER_SCHEMA> = (values) =>
+  const handleRegister: SubmitHandler<REGISTER_PAYLOAD> = (values) =>
     registerMutation(values);
 
   return (
     <section className="mx-auto my-auto px-4 md:border-l-1 lg:px-12 xl:px-20">
       <TypographyH1>Welcome to Ghar ka Khana</TypographyH1>
-
       <TypographyLead>Your goto online tiffin service.</TypographyLead>
-
       <Form
         className="my-10 flex flex-col items-center space-y-3"
         onSubmit={handleSubmit(handleRegister)}
@@ -127,7 +124,7 @@ const RegisterForm = () => {
           Sign up
         </Button>
       </Form>
-
+      x
       <div className="flex justify-between space-x-3">
         <TypographyP>Already registered with us?</TypographyP>
         <Link href="/login">Login</Link>

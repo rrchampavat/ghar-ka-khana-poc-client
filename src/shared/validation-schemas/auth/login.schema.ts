@@ -1,4 +1,4 @@
-import { object, string } from "yup";
+import { object, string, type InferType } from "yup";
 
 const loginSchema = object({
   emailOrContact: string().required(
@@ -10,3 +10,5 @@ const loginSchema = object({
 }).strict();
 
 export default loginSchema;
+
+export type LOGIN_PAYLOAD = InferType<typeof loginSchema>;

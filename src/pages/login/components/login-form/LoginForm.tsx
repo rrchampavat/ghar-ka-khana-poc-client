@@ -1,5 +1,7 @@
-import { login } from "@/services/auth/login";
-import loginSchema from "@/shared/validation-schemas/auth/login";
+import { login } from "@/services/auth/login.service";
+import loginSchema, {
+  type LOGIN_PAYLOAD
+} from "@/shared/validation-schemas/auth/login.schema";
 import Button from "@/ui/components/button/Button";
 import Input from "@/ui/components/input/Input";
 import PasswordInput from "@/ui/components/input/password-input/PasswordInput";

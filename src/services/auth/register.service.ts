@@ -1,4 +1,5 @@
 import API_ROUTES from "@/shared/constants/request-urls";
+import type { REGISTER_PAYLOAD } from "@/shared/validation-schemas/auth/register.schema";
 import Cookies from "js-cookie";
 import post from "../axios-methods/post";
 

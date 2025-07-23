@@ -1,4 +1,4 @@
-import getUsers from "@/services/user/getUsers";
+import getUsers from "@/services/user/getUsers.service";
 import { USER_ROLE } from "@/shared/constants/enums";
 import Avatar from "@/ui/components/avatar/Avatar";
 import Table from "@/ui/components/table/Table";

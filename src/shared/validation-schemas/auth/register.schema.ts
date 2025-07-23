@@ -2,7 +2,7 @@ import {
   passwordRegex,
   phoneRegex
 } from "@/shared/constants/regular-expressions";
-import { object, string } from "yup";
+import { object, string, type InferType } from "yup";
 
 const registerSchema = object({
   firstName: string()
@@ -27,3 +27,5 @@ const registerSchema = object({
 }).strict();
 
 export default registerSchema;
+
+export type REGISTER_PAYLOAD = InferType<typeof registerSchema>;

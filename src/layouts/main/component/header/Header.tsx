@@ -1,5 +1,5 @@
 import useLocalStorage from "@/hooks/useLocalStoage";
-import getUserById from "@/services/user/getUserById";
+import getUserById from "@/services/user/getUserById.service";
 import { USER_ROLE } from "@/shared/constants/enums";
 import Link from "@/ui/components/link/Link";
 import User from "@/ui/components/user/User";
