@@ -87,6 +87,7 @@ const RegisterForm = () => {
               type="email"
               label="Email address"
               className="w-full"
+              placeholder="Email address"
               errorMessage={formState.errors.email?.message}
               {...field}
             />
@@ -114,17 +115,23 @@ const RegisterForm = () => {
             <PasswordInput
               label="Password"
               className="mb-5 w-full"
+              placeholder="Password"
               errorMessage={formState.errors.password?.message}
               {...field}
             />
           )}
         />
 
-        <Button className="!mt-6 w-fit" isLoading={isPending} type="submit">
+        <Button
+          className="!mt-6 w-fit"
+          isLoading={isPending}
+          type="submit"
+          color="default"
+        >
           Sign up
         </Button>
       </Form>
-      x
+
       <div className="flex justify-between space-x-3">
         <TypographyP>Already registered with us?</TypographyP>
         <Link href="/login">Login</Link>

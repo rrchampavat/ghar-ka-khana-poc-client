@@ -17,6 +17,7 @@ const ServerError = () => {
       <Button
         className="w-fit border-black bg-black text-white hover:!bg-black"
         onClick={() => navigate("/")}
+        variant="solid"
       >
         Go Home
       </Button>

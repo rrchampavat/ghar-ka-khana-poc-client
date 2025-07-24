@@ -5,7 +5,7 @@ type USER = {
   email: string;
   contact_no: string;
   role: number;
-  user_image: string | null;
+  user_image: string;
 };
 
 type USER_RESPONSE = {

@@ -47,6 +47,7 @@ const post = async (API_ROUTE: string, payload: OBJECT): Promise<any> => {
     if (error.response.status === 401) {
       // Handle unauthorized access, e.g., redirect to login
       Cookies.remove("accessToken");
+      localStorage.clear();
       window.location.href = "/login";
     }
     const isNetworkError = !error.response;

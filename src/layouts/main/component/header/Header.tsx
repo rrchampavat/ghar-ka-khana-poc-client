@@ -45,6 +45,7 @@ const Header = () => {
     : "/svgs/tiffin-icon-black.png";
 
   const handleLogout = () => {
+    localStorage.clear();
     Cookies.remove("accessToken");
     navigate("/login");
   };

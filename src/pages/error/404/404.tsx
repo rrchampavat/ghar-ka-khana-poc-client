@@ -17,6 +17,7 @@ const NotFoundImage = () => {
       <Button
         className="w-fit border-black bg-black text-white hover:!bg-black"
         onClick={() => navigate(-1)}
+        variant="solid"
       >
         Go Back
       </Button>

@@ -1,6 +1,9 @@
 import getUsers from "@/services/user/getUsers.service";
-import { USER_ROLE } from "@/shared/constants/enums";
+import { COLOR, ROLE_COLOR, USER_ROLE } from "@/shared/constants/enums";
 import Avatar from "@/ui/components/avatar/Avatar";
+import DeleteButton from "@/ui/components/button/util/DeleteButton";
+import EditButton from "@/ui/components/button/util/EditButton";
+import ViewButton from "@/ui/components/button/util/ViewButton";
 import Table from "@/ui/components/table/Table";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -8,8 +11,8 @@ import { useState } from "react";
 const Users = () => {
   const [currPage, setCurrPage] = useState<number>(1);
   const [sort, setSort] = useState<SORT_PARAMS>({
-    sortBy: "",
-    sortOrder: "asc"
+    sortBy: "created_at",
+    sortOrder: "desc"
   });
   const [pageSize, setPageSize] = useState<number>(0);
 
@@ -37,7 +40,24 @@ const Users = () => {
         ),
         email: user.email,
         contact_no: user.contact_no,
-        role: USER_ROLE[user.role]
+        role: (
+          <span
+            style={{
+              color: COLOR[ROLE_COLOR[USER_ROLE[user.role]]]
+            }}
+          >
+            {USER_ROLE[user.role]}
+          </span>
+        ),
+        action: (
+          <div className="flex flex-row gap-1">
+            <ViewButton href={`/users/${user.id}`} />
+
+            <EditButton />
+
+            <DeleteButton />
+          </div>
+        )
       }))
     }),
     enabled: Boolean(pageSize)
@@ -46,15 +66,27 @@ const Users = () => {
   return (
     <Table
       columns={[
-        { key: "first_name", label: "Name", width: "28%", allowsSorting: true },
-        { key: "email", label: "Email", width: "30%", allowsSorting: true },
+        {
+          key: "first_name",
+          label: "Name",
+          width: "25%",
+          allowsSorting: true
+        },
+        { key: "email", label: "Email", width: "25%", allowsSorting: true },
         {
           key: "contact_no",
           label: "Contact No",
-          width: "27%",
-          allowsSorting: true
+          width: "20%",
+          allowsSorting: true,
+          align: "center"
         },
-        { key: "role", label: "Role", width: "15%" }
+        {
+          key: "role",
+          label: "Role",
+          width: "15%",
+          align: "center"
+        },
+        { key: "action", label: "Action", width: "15%", align: "center" }
       ]}
       paginationProps={{
         page: currPage,

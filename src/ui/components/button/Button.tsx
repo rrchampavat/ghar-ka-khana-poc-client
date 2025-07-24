@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
-import { Button as NextUIButton, type ButtonProps } from "@heroui/react";
+import { Button as HeroUIButton, type ButtonProps } from "@heroui/react";
 
 const Button = (props: ButtonProps) => {
   const {
     children,
-    variant = "ghost",
-    color = "default",
+    variant = "faded",
+    color = "primary",
     size = "md",
     radius = "sm",
     startContent,
@@ -31,7 +31,7 @@ const Button = (props: ButtonProps) => {
   } = props;
 
   return (
-    <NextUIButton
+    <HeroUIButton
       variant={variant}
       color={color}
       size={size}
@@ -54,11 +54,14 @@ const Button = (props: ButtonProps) => {
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
       onClick={onClick}
-      className={cn(className)}
+      className={cn(
+        className,
+        variant === "faded" ? "border border-gray-300 bg-white" : ""
+      )}
       {...restProps}
     >
       {children}
-    </NextUIButton>
+    </HeroUIButton>
   );
 };
 

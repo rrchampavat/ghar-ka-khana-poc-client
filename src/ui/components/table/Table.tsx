@@ -13,8 +13,11 @@ import {
   type TableHeaderProps
 } from "@heroui/react";
 import React, { useEffect, type Key, type ReactElement } from "react";
+import Button from "../button/Button";
 import Pagination from "../pagination/Pagination";
+import Popover from "../popover/Popover";
 import Select, { type SELECT_ITEM } from "../select/Select";
+import Skeleton from "../skeleton/Skeleton";
 import Spinner from "../spinner/Spinner";
 
 interface TABLE_COLUMN extends Partial<TableColumnProps<any>> {
@@ -43,6 +46,8 @@ interface TableProps extends BaseProps {
   paginationProps: PAGINATION_PROPS;
   setSortDescriptor: (value: SORT_PARAMS) => void;
   sortDescriptor: SORT_PARAMS;
+  hasSorting?: boolean;
+  hasPagination?: boolean;
 }
 
 const PAGE_SIZE_OPTIONS: SELECT_ITEM[] = [
@@ -80,6 +85,10 @@ const Table = (props: TableProps) => {
     paginationProps,
     setSortDescriptor,
     sortDescriptor,
+    hasSorting = true,
+    hasPagination = true,
+    topContent,
+    bottomContent,
     ...restProps
   } = props;
 
@@ -107,52 +116,141 @@ const Table = (props: TableProps) => {
     setLclPageSize(parseInt(e.target.value));
   };
 
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortDescriptor({ ...sortDescriptor, [e.target.name]: e.target.value });
+  };
+
   return (
     <HeroUITable
       layout={layout}
       color={color}
       isVirtualized={isVirtualized}
-      isHeaderSticky
       bottomContentPlacement="outside"
+      isHeaderSticky
       maxTableHeight={637}
-      bottomContent={
-        // ? Below logic makes the pagination disappear when loading
-        // ? Need to fix it
-        !tableBodyProps?.isLoading && (
-          <div className="flex w-full justify-end gap-3">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="primary"
-              page={page || 1}
-              total={totalPages || 1}
-              onChange={setPage}
-              isDisabled={tableBodyProps?.isLoading}
-            />
+      topContentPlacement="outside"
+      topContent={
+        <div className="flex flex-row items-center justify-between gap-1">
+          {topContent}
+          <div />
+          {hasSorting && (
+            <Popover
+              triggerElement={
+                <Button
+                  size="sm"
+                  isLoading={tableBodyProps?.isLoading}
+                  color="primary"
+                >
+                  Sort by:{" "}
+                  {
+                    columns.find(({ key }) => sortDescriptor.sortBy === key)
+                      ?.label
+                  }
+                </Button>
+              }
+              placement="bottom-end"
+              classNames={{
+                content: "gap-3 p-1.5 flex flex-row"
+              }}
+            >
+              <Select
+                name="sortBy"
+                items={columns
+                  .filter(({ allowsSorting }) => allowsSorting)
+                  .map(({ key, label }) => ({ key, label }))}
+                className="w-40"
+                placeholder="Name"
+                size="sm"
+                label="Sort by"
+                isClearable
+                defaultSelectedKeys={[sortDescriptor.sortBy]}
+                onChange={handleSortChange}
+                value={sortDescriptor.sortBy}
+                isLoading={tableBodyProps?.isLoading}
+                isDisabled={tableBodyProps?.isLoading}
+              />
 
-            <Select
-              className="max-w-31"
-              items={PAGE_SIZE_OPTIONS}
-              defaultSelectedKeys={[`${lclPageSize}`]}
-              onChange={handlePageSizeChange}
-              isDisabled={tableBodyProps?.isLoading}
-            />
-          </div>
-        )
+              <Select
+                name="sortOrder"
+                items={[
+                  { label: "Low to high", key: "asc" },
+                  { label: "High to low", key: "desc" }
+                ]}
+                className="w-40"
+                placeholder="Low to high"
+                label="Sort order"
+                size="sm"
+                isClearable
+                onChange={handleSortChange}
+                defaultSelectedKeys={[sortDescriptor.sortOrder]}
+                value={sortDescriptor.sortOrder}
+                isLoading={tableBodyProps?.isLoading}
+                isDisabled={tableBodyProps?.isLoading}
+              />
+            </Popover>
+          )}
+        </div>
       }
-      {...restProps}
+      bottomContent={
+        <div className="flex flex-row items-center justify-between gap-1">
+          {bottomContent}
+          <div />
+          {
+            // ? Below logic makes the pagination disappear when loading
+            // ? Need to fix it
+            hasPagination && (
+              // !tableBodyProps?.isLoading &&
+              <div className="flex w-full flex-row items-center justify-end gap-1">
+                {tableBodyProps?.isLoading ? (
+                  <Skeleton className="rounded-xl">
+                    <div className="h-10 w-70" />
+                  </Skeleton>
+                ) : (
+                  <Pagination
+                    isCompact
+                    showControls
+                    showShadow
+                    color="primary"
+                    page={page || 1}
+                    total={totalPages || 1}
+                    onChange={setPage}
+                    isDisabled={tableBodyProps?.isLoading}
+                  />
+                )}
+
+                {tableBodyProps?.isLoading ? (
+                  <Skeleton className="rounded-xl">
+                    <div className="h-10 w-30" />
+                  </Skeleton>
+                ) : (
+                  <Select
+                    className="max-w-31"
+                    items={PAGE_SIZE_OPTIONS}
+                    defaultSelectedKeys={[`${lclPageSize}`]}
+                    onChange={handlePageSizeChange}
+                    isDisabled={tableBodyProps?.isLoading}
+                  />
+                )}
+              </div>
+            )
+          }
+        </div>
+      }
       sortDescriptor={{
         column: sortDescriptor.sortBy,
         direction:
           sortDescriptor.sortOrder === "asc" ? "ascending" : "descending"
       }}
-      onSortChange={(sortDescriptor) => {
+      onSortChange={(sortDescriptor) =>
         setSortDescriptor({
           sortBy: sortDescriptor.column,
           sortOrder: sortDescriptor.direction === "ascending" ? "asc" : "desc"
-        });
+        })
+      }
+      classNames={{
+        td: "truncate"
       }}
+      {...restProps}
     >
       <TableHeader columns={columns} {...tableHeaderProps}>
         {(column) => (
@@ -160,7 +258,7 @@ const Table = (props: TableProps) => {
             key={column.key}
             align={column.align || "start"}
             hideHeader={column.hideHeader || false}
-            allowsSorting={column.allowsSorting || false}
+            allowsSorting={false}
             isRowHeader={column.isRowHeader || false}
             textValue={column.textValue}
             width={column.width}

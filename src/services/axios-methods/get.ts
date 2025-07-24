@@ -47,6 +47,7 @@ const get = async (API_ROUTE: string, PARAMS: OBJECT = {}): Promise<any> => {
     if (error.response.status === 401) {
       // Handle unauthorized access, e.g., redirect to login
       Cookies.remove("accessToken");
+      localStorage.clear();
       window.location.href = "/login";
     }
 

@@ -58,6 +58,7 @@ const LoginForm = () => {
             <Input
               type="text"
               label="Email or Contact number"
+              placeholder="Email or contact number"
               className="w-full"
               errorMessage={formState.errors.emailOrContact?.message}
               {...field}
@@ -71,13 +72,19 @@ const LoginForm = () => {
           render={({ field, formState }) => (
             <PasswordInput
               className="mb-5 w-full"
+              placeholder="Password"
               errorMessage={formState.errors.password?.message}
               {...field}
             />
           )}
         />
 
-        <Button isLoading={isPending} className="!mt-6 w-fit" type="submit">
+        <Button
+          isLoading={isPending}
+          className="!mt-6 w-fit"
+          type="submit"
+          color="default"
+        >
           Login
         </Button>
       </Form>

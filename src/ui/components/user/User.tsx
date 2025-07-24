@@ -1,9 +1,13 @@
+import { cn } from "@/lib/utils";
 import { User as HeroUIUser, type UserProps } from "@heroui/react";
 
 const User = (props: UserProps) => {
+  const { className } = props;
+
   return (
     <HeroUIUser
       {...props}
+      className={cn(className)}
       avatarProps={{
         ...props.avatarProps,
         getInitials: (name) =>

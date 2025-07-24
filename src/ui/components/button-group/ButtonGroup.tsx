@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   ButtonGroup as NextUIButtonGroup,
   type ButtonGroupProps
@@ -23,6 +24,7 @@ const ButtonGroup = (props: ButtonGroupProps) => {
       radius={radius}
       fullWidth={isFullWidth}
       isDisabled={isDisabled}
+      className={cn(className)}
       {...restProps}
     >
       {children}

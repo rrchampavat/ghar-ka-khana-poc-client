@@ -9,7 +9,7 @@ const AuthLayout = () => {
   }
 
   return (
-    <main className="container grid h-screen items-center md:grid-cols-[2fr_2fr] lg:grid-cols-[3fr_2fr]">
+    <main className="grid h-screen items-center md:grid-cols-[2fr_2fr] lg:grid-cols-[2.7fr_2fr]">
       <Outlet />
     </main>
   );

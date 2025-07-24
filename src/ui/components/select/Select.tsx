@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   Select as HeroUISelect,
   SelectItem,
@@ -15,8 +16,10 @@ interface SELECT_PROPS extends Omit<SelectProps, "children"> {
 }
 
 const Select = (props: SELECT_PROPS) => {
+  const { className } = props;
+
   return (
-    <HeroUISelect {...props}>
+    <HeroUISelect {...props} className={cn(className)}>
       {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
     </HeroUISelect>
   );
