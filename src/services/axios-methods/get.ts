@@ -46,9 +46,20 @@ const get = async (API_ROUTE: string, PARAMS: OBJECT = {}): Promise<any> => {
 
     if (error.response.status === 401) {
       // Handle unauthorized access, e.g., redirect to login
+      addToast({
+        title: "Unauthorized access!",
+        description:
+          "Access token expired. Please log in again or refresh your token.",
+        color: "danger"
+      });
+
       Cookies.remove("accessToken");
       localStorage.clear();
-      window.location.href = "/login";
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+
+      return;
     }
 
     const isNetworkError = !error.response;

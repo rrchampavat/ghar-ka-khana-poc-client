@@ -6,6 +6,7 @@ const MainLayout = () => {
   const isAuthenticated = Boolean(Cookies.get("accessToken"));
 
   if (!isAuthenticated) {
+    localStorage.clear();
     return <Navigate to="/login" replace />;
   }
 

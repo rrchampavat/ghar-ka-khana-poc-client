@@ -56,7 +56,7 @@ const Button = (props: ButtonProps) => {
       onClick={onClick}
       className={cn(
         className,
-        variant === "faded" ? "border border-gray-300 bg-white" : ""
+        variant === "faded" ? "border border-gray-300 bg-transparent" : ""
       )}
       {...restProps}
     >
