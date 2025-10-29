@@ -122,12 +122,7 @@ const RegisterForm = () => {
           )}
         />
 
-        <Button
-          className="!mt-6 w-fit"
-          isLoading={isPending}
-          type="submit"
-          color="default"
-        >
+        <Button className="!mt-6 w-fit" isLoading={isPending} type="submit">
           Sign up
         </Button>
       </Form>

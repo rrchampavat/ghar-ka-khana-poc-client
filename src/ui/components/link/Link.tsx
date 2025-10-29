@@ -1,7 +1,10 @@
 import { cn } from "@/lib/utils";
 import { Link as NextUILink, type LinkProps } from "@heroui/react";
+import { useNavigate } from "react-router-dom";
 
 const Link = (props: LinkProps) => {
+  const navigate = useNavigate();
+
   const {
     children,
     size = "md",
@@ -31,6 +34,29 @@ const Link = (props: LinkProps) => {
     ...restProps
   } = props;
 
+  const handleNavigation = (e: React.MouseEvent) => {
+    // Call the original onClick if provided
+    onClick?.(e as any);
+
+    // If it's an external link, download, target="_blank", or default behavior is prevented, let it handle normally
+    if (
+      isExternal ||
+      download ||
+      target === "_blank" ||
+      e.defaultPrevented ||
+      href.startsWith("http") ||
+      href.startsWith("//")
+    ) {
+      return;
+    }
+
+    // For internal navigation, prevent default and use React Router
+    if (href && !isDisabled) {
+      e.preventDefault();
+      navigate(href);
+    }
+  };
+
   return (
     <NextUILink
       size={size}
@@ -55,7 +81,7 @@ const Link = (props: LinkProps) => {
       onPressUp={onPressUp}
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
-      onClick={onClick}
+      onClick={handleNavigation}
       className={cn(className)}
       {...restProps}
     >

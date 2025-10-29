@@ -4,7 +4,7 @@ import { Button as HeroUIButton, type ButtonProps } from "@heroui/react";
 const Button = (props: ButtonProps) => {
   const {
     children,
-    variant = "faded",
+    variant = "shadow",
     color = "primary",
     size = "md",
     radius = "sm",

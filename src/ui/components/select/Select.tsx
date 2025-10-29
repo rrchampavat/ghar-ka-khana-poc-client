@@ -7,7 +7,7 @@ import {
 
 export type SELECT_ITEM = {
   key: string | number;
-  label: string;
+  label: string | number | undefined;
 };
 
 interface SELECT_PROPS extends Omit<SelectProps, "children"> {

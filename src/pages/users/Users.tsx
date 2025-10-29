@@ -4,17 +4,22 @@ import Avatar from "@/ui/components/avatar/Avatar";
 import DeleteButton from "@/ui/components/button/util/DeleteButton";
 import EditButton from "@/ui/components/button/util/EditButton";
 import ViewButton from "@/ui/components/button/util/ViewButton";
+import UpdateUserModal from "@/ui/components/modal/util/UpdateUserModal";
 import Table from "@/ui/components/table/Table";
+import { useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 const Users = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const [currPage, setCurrPage] = useState<number>(1);
   const [sort, setSort] = useState<SORT_PARAMS>({
-    sortBy: "created_at",
-    sortOrder: "desc"
+    sortBy: "id",
+    sortOrder: "asc"
   });
   const [pageSize, setPageSize] = useState<number>(0);
+  const [selectedUser, setSelectedUser] = useState<USER>();
 
   const { data, isLoading } = useQuery({
     queryKey: ["user-list", currPage, sort.sortBy, sort.sortOrder, pageSize],
@@ -53,7 +58,7 @@ const Users = () => {
           <div className="flex flex-row gap-1">
             <ViewButton href={`/users/${user.id}`} />
 
-            <EditButton />
+            <EditButton onPress={() => handleEdit(user)} />
 
             <DeleteButton />
           </div>
@@ -63,45 +68,59 @@ const Users = () => {
     enabled: Boolean(pageSize)
   });
 
+  const handleEdit = (user: USER) => {
+    onOpen();
+
+    setSelectedUser(user);
+  };
+
   return (
-    <Table
-      columns={[
-        {
-          key: "first_name",
-          label: "Name",
-          width: "25%",
-          allowsSorting: true
-        },
-        { key: "email", label: "Email", width: "25%", allowsSorting: true },
-        {
-          key: "contact_no",
-          label: "Contact No",
-          width: "20%",
-          allowsSorting: true,
-          align: "center"
-        },
-        {
-          key: "role",
-          label: "Role",
-          width: "15%",
-          align: "center"
-        },
-        { key: "action", label: "Action", width: "15%", align: "center" }
-      ]}
-      paginationProps={{
-        page: currPage,
-        setPage: setCurrPage,
-        totalPages: data?.totalPages,
-        setPageSize: setPageSize
-      }}
-      rows={data?.data}
-      tableBodyProps={{
-        isLoading,
-        loadingState: isLoading ? "loading" : "idle"
-      }}
-      sortDescriptor={sort}
-      setSortDescriptor={setSort}
-    />
+    <>
+      <Table
+        columns={[
+          {
+            key: "first_name",
+            label: "Name",
+            width: "25%",
+            allowsSorting: true
+          },
+          { key: "email", label: "Email", width: "25%", allowsSorting: true },
+          {
+            key: "contact_no",
+            label: "Contact No",
+            width: "20%",
+            allowsSorting: true,
+            align: "center"
+          },
+          {
+            key: "role",
+            label: "Role",
+            width: "15%",
+            align: "center"
+          },
+          { key: "action", label: "Action", width: "15%", align: "center" }
+        ]}
+        paginationProps={{
+          page: currPage,
+          setPage: setCurrPage,
+          totalPages: data?.totalPages,
+          setPageSize: setPageSize
+        }}
+        rows={data?.data}
+        tableBodyProps={{
+          isLoading,
+          loadingState: isLoading ? "loading" : "idle"
+        }}
+        sortDescriptor={sort}
+        setSortDescriptor={setSort}
+      />
+
+      <UpdateUserModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        selectedUser={selectedUser!}
+      />
+    </>
   );
 };
 

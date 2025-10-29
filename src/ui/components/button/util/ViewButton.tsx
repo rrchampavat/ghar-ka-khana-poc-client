@@ -22,7 +22,8 @@ const ViewButton = (props: ViewButtonProps) => {
       isIconOnly
       size="sm"
       color="primary"
-      onClick={handleNavigate}
+      onPress={handleNavigate}
+      variant="faded"
     >
       <SquareArrowOutUpRightIcon size={20} />
     </Button>

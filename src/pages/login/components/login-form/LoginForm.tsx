@@ -79,12 +79,7 @@ const LoginForm = () => {
           )}
         />
 
-        <Button
-          isLoading={isPending}
-          className="!mt-6 w-fit"
-          type="submit"
-          color="default"
-        >
+        <Button isLoading={isPending} className="!mt-6 w-fit" type="submit">
           Login
         </Button>
       </Form>
