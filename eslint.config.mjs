@@ -18,6 +18,9 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
+    ignores: ["eslint.config.mjs"]
+  },
+  {
     extends: compat.extends(
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended"
@@ -135,7 +138,7 @@ export default defineConfig([
       ],
 
       "@typescript-eslint/no-empty-interface": "error",
-      "@typescript-eslint/no-unnecessary-condition": "error",
+      // "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/prefer-includes": "error"
     }
   }

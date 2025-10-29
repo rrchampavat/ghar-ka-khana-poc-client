@@ -1,20 +1,19 @@
+import updateUser from "@/services/user/updateUser.service";
+import { USER_ROLES } from "@/shared/constants/defaultSelectValue";
+import { USER_ROLE } from "@/shared/constants/enums";
 import userUpdateSchema, {
   type USER_UPDATE_PAYLOAD
 } from "@/shared/validation-schemas/auth/userUpdate.schema";
 import { Form } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import Avatar from "../../avatar/Avatar";
 import Button from "../../button/Button";
 import Input from "../../input/Input";
-import Modal from "../Modal";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import getUserById from "@/services/user/getUserById.service";
-import { useEffect, useState } from "react";
 import Select from "../../select/Select";
-import { USER_ROLES } from "@/shared/constants/defaultSelectValue";
-import { USER_ROLE } from "@/shared/constants/enums";
-import updateUser from "@/services/user/updateUser.service";
-import Avatar from "../../avatar/Avatar";
+import Modal from "../Modal";
 
 type UpdateUserModalProps = {
   isOpen: boolean;
@@ -58,14 +57,14 @@ const UpdateUserModal = (props: UpdateUserModalProps) => {
     values: USER_UPDATE_PAYLOAD
   ) => updateUserMutation(values);
 
-  const { data } = useQuery<USER>({
-    queryFn: () => getUserById(user.id!),
-    queryKey: ["user-by-id", user.id],
-    enabled: !user.id
-  });
+  // const { data } = useQuery<USER>({
+  //   queryFn: () => getUserById(user.id!),
+  //   queryKey: ["user-by-id", user.id],
+  //   enabled: !user.id
+  // });
 
   useEffect(() => {
-    if (selectedUser.id) {
+    if (selectedUser?.id) {
       setUser(selectedUser);
       setSelectedRole(new Set([`${selectedUser.role}`]));
       // Reset form with user data
@@ -80,20 +79,20 @@ const UpdateUserModal = (props: UpdateUserModalProps) => {
       return;
     }
 
-    if (!selectedUser.id && data?.id) {
-      setUser(data);
-      setSelectedRole(new Set([`${data.role}`]));
-      // Reset form with fetched data
-      reset({
-        firstName: data.first_name || "",
-        lastName: data.last_name || "",
-        email: data.email || "",
-        contactNo: data.contact_no || "",
-        role: data.role || 0,
-        userImage: data.user_image || ""
-      });
-    }
-  }, [selectedUser.id, data?.id, reset]);
+    // if (!selectedUser.id && data?.id) {
+    //   setUser(data);
+    //   setSelectedRole(new Set([`${data.role}`]));
+    //   // Reset form with fetched data
+    //   reset({
+    //     firstName: data.first_name || "",
+    //     lastName: data.last_name || "",
+    //     email: data.email || "",
+    //     contactNo: data.contact_no || "",
+    //     role: data.role || 0,
+    //     userImage: data.user_image || ""
+    //   });
+    // }
+  }, [selectedUser?.id, reset]);
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
