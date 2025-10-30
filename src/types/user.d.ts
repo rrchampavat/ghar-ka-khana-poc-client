@@ -6,6 +6,9 @@ type USER = {
   contact_no: string;
   role: number;
   user_image: string;
+  created_at: string;
+  updated_at: string | null;
+  deleted_at: string | null;
 };
 
 type USER_RESPONSE = {

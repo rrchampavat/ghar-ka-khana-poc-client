@@ -1,13 +1,16 @@
 import getUsers from "@/services/user/getUsers.service";
 import { COLOR, ROLE_COLOR, USER_ROLE } from "@/shared/constants/enums";
 import Avatar from "@/ui/components/avatar/Avatar";
+import Button from "@/ui/components/button/Button";
 import DeleteButton from "@/ui/components/button/util/DeleteButton";
 import EditButton from "@/ui/components/button/util/EditButton";
 import ViewButton from "@/ui/components/button/util/ViewButton";
 import UpdateUserModal from "@/ui/components/modal/util/UpdateUserModal";
 import Table from "@/ui/components/table/Table";
+import Tooltip from "@/ui/components/tooltip/Tooltip";
 import { useDisclosure } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
+import { CircleMinusIcon } from "lucide-react";
 import { useState } from "react";
 
 const Users = () => {
@@ -35,12 +38,19 @@ const Users = () => {
       data: data.data.map((user) => ({
         key: user.id,
         first_name: (
-          <div className="flex flex-row items-center gap-2">
-            <Avatar
-              src={user.user_image!}
-              name={`${user.first_name} ${user.last_name}`}
-            />
-            {user.first_name} {user.last_name}
+          <div className="flex w-full items-center justify-between">
+            <div className="flex flex-row items-center gap-2">
+              <Avatar
+                src={user.user_image!}
+                name={`${user.first_name} ${user.last_name}`}
+              />
+              {user.first_name} {user.last_name}
+            </div>
+            {user.deleted_at && (
+              <Tooltip content="Deactivated User" color="danger" showArrow>
+                <CircleMinusIcon className="w-5 text-red-600" />
+              </Tooltip>
+            )}
           </div>
         ),
         email: user.email,
@@ -56,11 +66,24 @@ const Users = () => {
         ),
         action: (
           <div className="flex flex-row gap-1">
-            <ViewButton href={`/users/${user.id}`} />
+            {user.deleted_at ? (
+              <Button
+                size="sm"
+                variant="ghost"
+                color="success"
+                className="mx-auto"
+              >
+                Activate
+              </Button>
+            ) : (
+              <>
+                <ViewButton href={`/users/${user.id}`} />
 
-            <EditButton onPress={() => handleEdit(user)} />
+                <EditButton onPress={() => handleEdit(user)} />
 
-            <DeleteButton />
+                <DeleteButton />
+              </>
+            )}
           </div>
         )
       }))
