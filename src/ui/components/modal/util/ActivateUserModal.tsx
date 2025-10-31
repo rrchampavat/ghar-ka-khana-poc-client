@@ -1,22 +1,22 @@
-import deactivateUser from "@/services/user/deactivateUser.service";
+import activateUser from "@/services/user/activateUser.service";
 import { COLOR } from "@/shared/constants/enums";
 import { addToast } from "@heroui/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Button from "../../button/Button";
 import Modal from "../Modal";
 
-type DeactivateUserModalProps = {
+type ActivateUserModalProps = {
   isOpen: boolean;
   onOpenChange?: ((isOpen: boolean) => void) | undefined;
   selectedUser: USER;
 };
 
-const DeactivateUserModal = (props: DeactivateUserModalProps) => {
+const ActivateUserModal = (props: ActivateUserModalProps) => {
   const { isOpen, onOpenChange, selectedUser } = props;
   const queryClient = useQueryClient();
 
-  const { mutate: deactivateUserMutation, isPending } = useMutation({
-    mutationFn: () => deactivateUser(selectedUser.id!),
+  const { mutate: activateUserMutation, isPending } = useMutation({
+    mutationFn: () => activateUser(selectedUser.id!),
     onSuccess: () => {
       onOpenChange?.(false);
       // Invalidate queries or update state as needed
@@ -24,7 +24,7 @@ const DeactivateUserModal = (props: DeactivateUserModalProps) => {
 
       addToast({
         title: "Success",
-        description: "User deactivated successfully.",
+        description: "User activated successfully.",
         color: "success"
       });
     }
@@ -34,12 +34,12 @@ const DeactivateUserModal = (props: DeactivateUserModalProps) => {
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      headerContent="Deactivate User"
+      headerContent="Activate User"
       bodyContent={
         <div className="flex">
           Are you sure you want to{" "}
-          <span style={{ color: COLOR["danger"] }} className="mx-1">
-            deactivate
+          <span style={{ color: COLOR["success"] }} className="mx-1">
+            activate
           </span>{" "}
           {selectedUser?.first_name}?
         </div>
@@ -56,10 +56,10 @@ const DeactivateUserModal = (props: DeactivateUserModalProps) => {
 
           <Button
             color="danger"
-            onPress={() => deactivateUserMutation()}
+            onPress={() => activateUserMutation()}
             isLoading={isPending}
           >
-            Deactivate
+            Activate
           </Button>
         </>
       }
@@ -67,4 +67,4 @@ const DeactivateUserModal = (props: DeactivateUserModalProps) => {
   );
 };
 
-export default DeactivateUserModal;
+export default ActivateUserModal;
