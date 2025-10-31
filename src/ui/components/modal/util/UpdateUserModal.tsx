@@ -4,7 +4,7 @@ import { USER_ROLE } from "@/shared/constants/enums";
 import userUpdateSchema, {
   type USER_UPDATE_PAYLOAD
 } from "@/shared/validation-schemas/auth/userUpdate.schema";
-import { Form } from "@heroui/react";
+import { addToast, Form } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -50,6 +50,12 @@ const UpdateUserModal = (props: UpdateUserModalProps) => {
       onOpenChange?.(false);
       queryClient.invalidateQueries({ queryKey: ["user-list"] });
       queryClient.invalidateQueries({ queryKey: ["user-by-id", user.id] });
+
+      addToast({
+        title: "Success",
+        description: "User updated successfully.",
+        color: "success"
+      });
     }
   });
 
@@ -218,8 +224,8 @@ const UpdateUserModal = (props: UpdateUserModalProps) => {
               render={() => (
                 <>
                   <Avatar
-                    src={user.user_image}
-                    name={`${user.first_name} ${user.last_name}`}
+                    src={user?.user_image}
+                    name={`${user?.first_name} ${user?.last_name}`}
                   />
                 </>
               )}
@@ -228,14 +234,25 @@ const UpdateUserModal = (props: UpdateUserModalProps) => {
         </Form>
       }
       footerContent={
-        <Button
-          size="sm"
-          isLoading={isPending}
-          type="submit"
-          form="update-user-form"
-        >
-          Update
-        </Button>
+        <>
+          <Button
+            variant="light"
+            onPress={() => onOpenChange?.(false)}
+            disabled={isPending}
+            color="danger"
+          >
+            Cancel
+          </Button>
+
+          <Button
+            size="sm"
+            isLoading={isPending}
+            type="submit"
+            form="update-user-form"
+          >
+            Update
+          </Button>
+        </>
       }
     />
   );
