@@ -5,6 +5,7 @@ import Button from "@/ui/components/button/Button";
 import DeactivateButton from "@/ui/components/button/util/DeactivateButton";
 import EditButton from "@/ui/components/button/util/EditButton";
 import ViewButton from "@/ui/components/button/util/ViewButton";
+import ActivateUserModal from "@/ui/components/modal/util/ActivateUserModal";
 import DeactivateUserModal from "@/ui/components/modal/util/DeactivateUserModal";
 import UpdateUserModal from "@/ui/components/modal/util/UpdateUserModal";
 import Table from "@/ui/components/table/Table";
@@ -25,6 +26,12 @@ const Users = () => {
     isOpen: isDeactivateUserModalOpen,
     onOpen: onDeactivateUserModalOpen,
     onOpenChange: onDeactivateUserModalOpenChange
+  } = useDisclosure();
+
+  const {
+    isOpen: isActivateUserModalOpen,
+    onOpen: onActivateUserModalOpen,
+    onOpenChange: onActivateUserModalOpenChange
   } = useDisclosure();
 
   const [currPage, setCurrPage] = useState<number>(1);
@@ -88,6 +95,7 @@ const Users = () => {
                 variant="ghost"
                 color="success"
                 className="mx-auto"
+                onPress={() => handleActivate(user)}
               >
                 Activate
               </Button>
@@ -116,6 +124,12 @@ const Users = () => {
 
   const handleDeactivate = (user: USER) => {
     onDeactivateUserModalOpen();
+
+    setSelectedUser(user);
+  };
+
+  const handleActivate = (user: USER) => {
+    onActivateUserModalOpen();
 
     setSelectedUser(user);
   };
@@ -170,6 +184,12 @@ const Users = () => {
       <DeactivateUserModal
         isOpen={isDeactivateUserModalOpen}
         onOpenChange={onDeactivateUserModalOpenChange}
+        selectedUser={selectedUser!}
+      />
+
+      <ActivateUserModal
+        isOpen={isActivateUserModalOpen}
+        onOpenChange={onActivateUserModalOpenChange}
         selectedUser={selectedUser!}
       />
     </>
