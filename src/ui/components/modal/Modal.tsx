@@ -7,6 +7,7 @@ import {
   type ModalProps as HeroUIModalProps
 } from "@heroui/react";
 import type { ReactNode } from "react";
+import Button from "../button/Button";
 
 type ModalProps = Omit<HeroUIModalProps, "children"> & {
   headerContent?: ReactNode;
@@ -30,7 +31,17 @@ const Modal = (props: ModalProps) => {
       <ModalContent>
         <ModalHeader>{headerContent}</ModalHeader>
         <ModalBody>{bodyContent}</ModalBody>
-        <ModalFooter>{footerContent}</ModalFooter>
+        <ModalFooter>
+          {footerContent || (
+            <>
+              {" "}
+              <Button color="danger" variant="light">
+                Close
+              </Button>
+              <Button color="primary">Action</Button>
+            </>
+          )}
+        </ModalFooter>
       </ModalContent>
     </HeroUIModal>
   );

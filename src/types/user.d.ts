@@ -8,7 +8,7 @@ type USER = {
   user_image: string;
   created_at: string;
   updated_at: string | null;
-  deleted_at: string | null;
+  is_active: boolean;
 };
 
 type USER_RESPONSE = {

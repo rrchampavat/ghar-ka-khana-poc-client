@@ -2,9 +2,10 @@ import getUsers from "@/services/user/getUsers.service";
 import { COLOR, ROLE_COLOR, USER_ROLE } from "@/shared/constants/enums";
 import Avatar from "@/ui/components/avatar/Avatar";
 import Button from "@/ui/components/button/Button";
-import DeleteButton from "@/ui/components/button/util/DeleteButton";
+import DeactivateButton from "@/ui/components/button/util/DeactivateButton";
 import EditButton from "@/ui/components/button/util/EditButton";
 import ViewButton from "@/ui/components/button/util/ViewButton";
+import DeactivateUserModal from "@/ui/components/modal/util/DeactivateUserModal";
 import UpdateUserModal from "@/ui/components/modal/util/UpdateUserModal";
 import Table from "@/ui/components/table/Table";
 import Tooltip from "@/ui/components/tooltip/Tooltip";
@@ -14,7 +15,17 @@ import { CircleMinusIcon } from "lucide-react";
 import { useState } from "react";
 
 const Users = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isUpdateUserModalOpen,
+    onOpen: onUpdateUserModalOpen,
+    onOpenChange: onUpdateUserModalOpenChange
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeactivateUserModalOpen,
+    onOpen: onDeactivateUserModalOpen,
+    onOpenChange: onDeactivateUserModalOpenChange
+  } = useDisclosure();
 
   const [currPage, setCurrPage] = useState<number>(1);
   const [sort, setSort] = useState<SORT_PARAMS>({
@@ -46,8 +57,13 @@ const Users = () => {
               />
               {user.first_name} {user.last_name}
             </div>
-            {user.deleted_at && (
-              <Tooltip content="Deactivated User" color="danger" showArrow>
+            {!user.is_active && (
+              <Tooltip
+                content="Deactivated"
+                color="danger"
+                showArrow
+                offset={0}
+              >
                 <CircleMinusIcon className="w-5 text-red-600" />
               </Tooltip>
             )}
@@ -66,7 +82,7 @@ const Users = () => {
         ),
         action: (
           <div className="flex flex-row gap-1">
-            {user.deleted_at ? (
+            {!user.is_active ? (
               <Button
                 size="sm"
                 variant="ghost"
@@ -81,7 +97,8 @@ const Users = () => {
 
                 <EditButton onPress={() => handleEdit(user)} />
 
-                <DeleteButton />
+                <DeactivateButton onPress={() => handleDeactivate(user)} />
+                {/* <DeleteButton /> */}
               </>
             )}
           </div>
@@ -92,7 +109,13 @@ const Users = () => {
   });
 
   const handleEdit = (user: USER) => {
-    onOpen();
+    onUpdateUserModalOpen();
+
+    setSelectedUser(user);
+  };
+
+  const handleDeactivate = (user: USER) => {
+    onDeactivateUserModalOpen();
 
     setSelectedUser(user);
   };
@@ -139,8 +162,14 @@ const Users = () => {
       />
 
       <UpdateUserModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        isOpen={isUpdateUserModalOpen}
+        onOpenChange={onUpdateUserModalOpenChange}
+        selectedUser={selectedUser!}
+      />
+
+      <DeactivateUserModal
+        isOpen={isDeactivateUserModalOpen}
+        onOpenChange={onDeactivateUserModalOpenChange}
         selectedUser={selectedUser!}
       />
     </>
