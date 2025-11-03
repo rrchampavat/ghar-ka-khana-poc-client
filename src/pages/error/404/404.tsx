@@ -14,11 +14,7 @@ const NotFoundImage = () => {
       <TypographyH4>
         Oops! The page you're looking for does not exist.
       </TypographyH4>
-      <Button
-        className="w-fit border-black bg-black text-white hover:!bg-black"
-        onClick={() => navigate(-1)}
-        variant="solid"
-      >
+      <Button className="w-fit" onPress={() => navigate(-1)} variant="solid">
         Go Back
       </Button>
     </div>

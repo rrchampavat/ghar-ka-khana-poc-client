@@ -1,7 +1,9 @@
 import useLocalStorage from "@/hooks/useLocalStoage";
 import getUserById from "@/services/user/getUserById.service";
+import clearLocalStorage from "@/shared/clearLocalStorage";
 import { USER_ROLE } from "@/shared/constants/enums";
 import Link from "@/ui/components/link/Link";
+import ThemeSwitch from "@/ui/components/switch/util/ThemeSwitch";
 import User from "@/ui/components/user/User";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@heroui/navbar";
 import {
@@ -41,11 +43,11 @@ const Header = () => {
   const navigate = useNavigate();
 
   const imageSrc = isDarkMode
-    ? "/svgs/tiffin-icon-white.png"
-    : "/svgs/tiffin-icon-black.png";
+    ? "/svgs/tiffin-icon-white.svg"
+    : "/svgs/tiffin-icon-black.svg";
 
   const handleLogout = () => {
-    localStorage.clear();
+    clearLocalStorage(["user"]);
     Cookies.remove("accessToken");
     navigate("/login");
   };
@@ -119,6 +121,10 @@ const Header = () => {
       </NavbarContent>
 
       <NavbarContent justify="end">
+        <NavbarItem>
+          <ThemeSwitch />
+        </NavbarItem>
+
         <NavbarItem>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
