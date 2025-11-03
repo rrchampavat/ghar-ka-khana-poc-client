@@ -14,11 +14,7 @@ const ServerError = () => {
       <TypographyH4>
         Oops! Something went wrong on our end. Please try again later.
       </TypographyH4>
-      <Button
-        className="w-fit border-black bg-black text-white hover:!bg-black"
-        onClick={() => navigate("/")}
-        variant="solid"
-      >
+      <Button className="w-fit" onPress={() => navigate("/")} variant="solid">
         Go Home
       </Button>
     </div>

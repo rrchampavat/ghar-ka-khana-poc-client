@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import clearLocalStorage from "@/shared/clearLocalStorage";
 import { SERVER_URL } from "@/shared/constants/envVars";
 import { addToast } from "@heroui/toast";
 import axios, { type AxiosResponse } from "axios";
@@ -54,7 +55,8 @@ const get = async (API_ROUTE: string, PARAMS: OBJECT = {}): Promise<any> => {
       });
 
       Cookies.remove("accessToken");
-      localStorage.clear();
+      //  clearLocalStorage(["user"]);
+      clearLocalStorage(["user"]);
       setTimeout(() => {
         window.location.href = "/login";
       }, 2000);

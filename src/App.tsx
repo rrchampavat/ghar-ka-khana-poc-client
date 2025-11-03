@@ -7,7 +7,11 @@ import routes from "./routes/routes";
 import Fallback from "./ui/layouts/fallback/Fallback";
 
 function App() {
-  const { value: isDarkMode } = useDarkMode(false);
+  const { value: isDarkMode } = useDarkMode(false, {
+    // Applies dark mode to html so modals rendered via portals inherit the theme
+    element: document.documentElement,
+    classNameDark: "dark"
+  });
 
   return (
     <Providers>
