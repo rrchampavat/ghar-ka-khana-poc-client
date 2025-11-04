@@ -30,7 +30,10 @@ const Providers = ({ children }: { children: ReactNode }) => {
       <ToastProvider
         toastProps={{
           variant: "solid",
-          timeout: 5000
+          timeout: 5000,
+          classNames: {
+            content: "text-background"
+          }
         }}
       />
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

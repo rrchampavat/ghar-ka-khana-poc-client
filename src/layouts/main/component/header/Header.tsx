@@ -94,7 +94,7 @@ const Header = () => {
   const loggedUser = lclUser?.id ? lclUser : data;
 
   return (
-    <Navbar className="shadow-lg" maxWidth="xl">
+    <Navbar classNames={{ base: "shadow-lg bg-content1" }} maxWidth="xl">
       <NavbarBrand>
         <Image
           src={imageSrc}

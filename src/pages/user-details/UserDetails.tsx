@@ -21,7 +21,7 @@ const UserDetails = () => {
   });
 
   return (
-    <Card className="mx-auto flex w-1/2 flex-row justify-between p-6">
+    <Card className="bg-content2 border-divider mx-auto flex w-1/2 flex-row justify-between border p-6">
       <div className="flex flex-col gap-1">
         {isLoading ? (
           <Skeleton className="mt-1 h-6 w-60 rounded-md" />

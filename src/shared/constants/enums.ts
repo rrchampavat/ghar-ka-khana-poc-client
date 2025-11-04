@@ -32,9 +32,9 @@ export const ROLE_COLOR: {
 
 export const COLOR: { [key: string]: string } = {
   default: "#d4d4d8",
-  primary: "#006FEE",
-  secondary: "#7828c8",
-  success: "#17c964",
+  primary: "#6366f1",
+  secondary: "#06b6d4",
+  success: "#10b981",
   warning: "#f5a524",
-  danger: "#f31260"
+  danger: "#ef4444"
 };

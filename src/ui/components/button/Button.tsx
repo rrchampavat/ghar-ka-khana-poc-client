@@ -46,19 +46,22 @@ const Button = (props: ButtonProps) => {
       isLoading={isLoading}
       disableRipple={isDisableRipple}
       disableAnimation={isDisableAnimation}
-      onPress={onPress}
-      onPressStart={onPressStart}
-      onPressEnd={onPressEnd}
-      onPressChange={onPressChange}
-      onPressUp={onPressUp}
-      onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
-      onClick={onClick}
       className={cn(
         className,
-        variant === "faded" ? "border border-gray-300 bg-transparent" : ""
+        variant === "faded" ? "border border-gray-300 bg-transparent" : "",
+        variant === "ghost"
+          ? "data-[hover=true]:bg-foreground data-[hover=true]:text-background"
+          : ""
       )}
       {...restProps}
+      {...(onPress && { onPress })}
+      {...(onPressStart && { onPressStart })}
+      {...(onPressEnd && { onPressEnd })}
+      {...(onPressChange && { onPressChange })}
+      {...(onPressUp && { onPressUp })}
+      {...(onKeyDown && { onKeyDown })}
+      {...(onKeyUp && { onKeyUp })}
+      {...(onClick && { onClick })}
     >
       {children}
     </HeroUIButton>

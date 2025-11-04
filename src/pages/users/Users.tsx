@@ -87,28 +87,23 @@ const Users = () => {
             {USER_ROLE[user.role]}
           </span>
         ),
-        action: (
-          <div className="flex flex-row gap-1">
-            {!user.is_active ? (
-              <Button
-                size="sm"
-                variant="ghost"
-                color="success"
-                className="mx-auto"
-                onPress={() => handleActivate(user)}
-              >
-                Activate
-              </Button>
-            ) : (
-              <>
-                <ViewButton href={`/users/${user.id}`} />
+        action: !user.is_active ? (
+          <Button
+            size="sm"
+            variant="ghost"
+            color="success"
+            className="mx-auto"
+            onPress={() => handleActivate(user)}
+          >
+            Activate
+          </Button>
+        ) : (
+          <div className="space-x-1">
+            <ViewButton href={`/users/${user.id}`} />
 
-                <EditButton onPress={() => handleEdit(user)} />
+            <EditButton onPress={() => handleEdit(user)} />
 
-                <DeactivateButton onPress={() => handleDeactivate(user)} />
-                {/* <DeleteButton /> */}
-              </>
-            )}
+            <DeactivateButton onPress={() => handleDeactivate(user)} />
           </div>
         )
       }))
