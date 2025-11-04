@@ -14,6 +14,7 @@ interface PopoverProps extends Omit<HeroUIPopoverProps, "children"> {
 
 const Popover = (props: PopoverProps) => {
   const { children, triggerElement, className, ...restProps } = props;
+
   return (
     <HeroUIPopover {...restProps} className={cn(className)}>
       <PopoverTrigger>{triggerElement}</PopoverTrigger>
