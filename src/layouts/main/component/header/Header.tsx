@@ -1,4 +1,5 @@
 import useLocalStorage from "@/hooks/useLocalStoage";
+import { logout } from "@/services/auth/logout.service";
 import getUserById from "@/services/user/getUserById.service";
 import clearLocalStorage from "@/shared/clearLocalStorage";
 import { USER_ROLE } from "@/shared/constants/enums";
@@ -13,7 +14,7 @@ import {
   DropdownTrigger,
   Image
 } from "@heroui/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDarkMode from "use-dark-mode";
@@ -41,15 +42,24 @@ const Header = () => {
   const currentPath = location.pathname;
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const imageSrc = isDarkMode
     ? "/svgs/tiffin-icon-white.svg"
     : "/svgs/tiffin-icon-black.svg";
 
+  const { mutate: logoutMutation } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      queryClient.clear();
+      clearLocalStorage(["user"]);
+      Cookies.remove("accessToken");
+      navigate("/login");
+    }
+  });
+
   const handleLogout = () => {
-    clearLocalStorage(["user"]);
-    Cookies.remove("accessToken");
-    navigate("/login");
+    logoutMutation();
   };
 
   const dropDownItems: DROPDOWN_ITEM[] = [

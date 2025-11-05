@@ -1,9 +1,19 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import clearLocalStorage from "@/shared/clearLocalStorage";
-import { SERVER_URL } from "@/shared/constants/envVars";
+import {
+  SERVER_URL,
+  SHOULD_ENABLE_CREDENTIALS
+} from "@/shared/constants/envVars";
 import { addToast } from "@heroui/toast";
 import axios from "axios";
 import Cookies from "js-cookie";
+import {
+  addToRefreshQueue,
+  getIsRefreshing,
+  processQueue,
+  setIsRefreshing,
+  tryRefreshToken
+} from "./refreshToken";
 
 const update = async (
   API_ROUTE: string,
@@ -22,7 +32,7 @@ const update = async (
         authorization: `Bearer ${accessToken}`
       },
       timeout: 10000,
-      withCredentials: false,
+      withCredentials: SHOULD_ENABLE_CREDENTIALS, // Required to send HttpOnly refresh cookie
       responseType: "json",
       validateStatus: (status: number) => status >= 200 && status < 300,
       maxRedirects: 21
@@ -32,6 +42,7 @@ const update = async (
 
     return data;
   } catch (error: any) {
+    let currentError = error;
     if (error.response?.status === 500) {
       // throw new Error("Something went wrong.");
     }
@@ -48,30 +59,93 @@ const update = async (
       // throw new Error("Could not connect to server.");
     }
 
-    if (error.response.status === 401) {
-      // Handle unauthorized access, e.g., redirect to login
-      addToast({
-        title: "Unauthorized access!",
-        description:
-          "Access token expired. Please log in again or refresh your token.",
-        color: "danger"
-      });
+    // Handle 401 with refresh token logic
+    if (error.response?.status === 401) {
+      // Prevent trying to refresh if this request was the refresh endpoint itself
+      const wasRefreshCall =
+        error.config &&
+        (String(error.config.url).includes("/auth/refresh") ||
+          String(error.config.baseURL).includes("/auth/refresh"));
 
-      Cookies.remove("accessToken");
-      clearLocalStorage(["user"]);
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
+      if (wasRefreshCall) {
+        // Refresh itself failed -> force logout
+        addToast({
+          title: "Session Expired",
+          description: "Please log in again.",
+          color: "danger"
+        });
 
-      return;
+        Cookies.remove("accessToken");
+        clearLocalStorage(["user"]);
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+
+        return;
+      }
+
+      // If a refresh is already in progress, queue this request
+      if (getIsRefreshing()) {
+        return new Promise((resolve, reject) => {
+          addToRefreshQueue({ resolve, reject, config: error.config });
+        });
+      }
+
+      // Mark refresh started
+      setIsRefreshing(true);
+
+      const newToken = await tryRefreshToken();
+
+      if (!newToken) {
+        // Refresh failed -> logout
+        setIsRefreshing(false);
+
+        processQueue(new Error("Refresh failed"), null);
+
+        addToast({
+          title: "Unauthorized access!",
+          description: "Access token expired. Please log in again.",
+          color: "danger"
+        });
+
+        Cookies.remove("accessToken");
+        clearLocalStorage(["user"]);
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+
+        return;
+      }
+
+      // Refresh succeeded -> retry original request with new token
+      setIsRefreshing(false);
+
+      processQueue(null, newToken);
+
+      // Retry the original request (error.config contains original axios config)
+      if (error.config) {
+        // Set Authorization header and retry
+        if (!error.config.headers) error.config.headers = {};
+        (error.config.headers as any).authorization = `Bearer ${newToken}`;
+
+        try {
+          const retryResp = await axios.request(error.config);
+
+          return retryResp.data;
+        } catch (retryErr: any) {
+          // If retry fails, use retry error for handling below
+          currentError = retryErr;
+        }
+      }
     }
-    const isNetworkError = !error.response;
+    const isNetworkError = !currentError.response;
 
     const errorTitle = isNetworkError ? "Network Error!" : "Request Error!";
 
     const errorMessage = isNetworkError
       ? "Please check your server connection."
-      : error?.response?.data?.message || "An unexpected error occurred.";
+      : currentError?.response?.data?.message ||
+        "An unexpected error occurred.";
 
     addToast({
       title: errorTitle,
@@ -79,7 +153,7 @@ const update = async (
       color: "danger"
     });
 
-    throw new Error(error?.response?.data?.message);
+    throw new Error(currentError?.response?.data?.message || errorMessage);
   }
 };
 
