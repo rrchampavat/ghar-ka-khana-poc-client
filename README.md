@@ -60,12 +60,14 @@ client/
 
 ## 🎨 Features
 
-- **User Authentication:** Login and registration with JWT token management
+- **User Authentication:** Login and registration with JWT token management and automatic refresh token rotation
+- **Token Management:** Secure JWT access tokens with HttpOnly refresh cookies implementing token rotation
 - **User Management:** CRUD operations for users with role-based access
 - **Dark Mode:** Toggle between light and dark themes with persistence
 - **Responsive Design:** Mobile-first responsive UI using Tailwind CSS
 - **Form Validation:** Robust form validation using Yup schemas
 - **Error Handling:** Centralized error handling with toast notifications
+- **Automatic Token Refresh:** Seamless access token refresh with request queuing
 - **Type Safety:** Full TypeScript support for better developer experience
 - **Code Quality:** ESLint and Prettier configured for consistent code style
 
@@ -89,7 +91,11 @@ client/
 
    ```env
    VITE_SERVER_URL=your_backend_server_url
+   # Optional: Enable credentials for production (requires proper CORS setup)
+   # VITE_ENABLE_CREDENTIALS=true
    ```
+
+   **Note:** In development mode, `VITE_ENABLE_CREDENTIALS` is automatically enabled. The Vite proxy handles CORS issues automatically.
 
 4. **Start the development server:**
    ```bash
@@ -131,8 +137,11 @@ Pre-commit hooks are configured to run lint-staged, ensuring code quality before
 
 ### Authentication
 
-- Login and registration flows
-- JWT token management with cookies
+- Login and registration flows with automatic token refresh
+- JWT access token management stored in regular cookies
+- HttpOnly refresh token cookies for enhanced security
+- Automatic token rotation on refresh (backend creates new refresh token, revokes old one)
+- Seamless token refresh on 401 errors with request queuing
 - Protected routes with authentication guards
 
 ### User Management
@@ -157,10 +166,31 @@ Built on top of HeroUI with custom wrappers:
 
 The application uses Axios for HTTP requests with:
 
-- Centralized error handling
-- Token-based authentication
-- Request/response interceptors
-- Network error handling
+- **Centralized error handling** across all HTTP methods
+- **Token-based authentication** with automatic refresh
+- **Refresh token rotation** implemented via shared utility
+- **Request queuing** to prevent multiple simultaneous refresh calls
+- **HttpOnly cookie support** via `withCredentials` for secure refresh tokens
+- **Automatic retry** of failed requests after token refresh
+- **Network error handling** with user-friendly error messages
+
+### HTTP Methods
+
+All HTTP methods (`GET`, `POST`, `PUT`, `PATCH`) support:
+
+- Automatic access token refresh on 401 errors
+- Shared refresh token logic via `refreshToken.ts` utility
+- Cookie-based authentication with HttpOnly refresh cookies
+- Request queuing during token refresh to prevent race conditions
+
+### Development Proxy
+
+The Vite development server includes a proxy configuration that:
+
+- Proxies all `/api/*` requests to the backend server
+- Automatically handles CORS issues in development
+- Forwards cookies and credentials between client and server
+- Removes `Secure` flag from cookies for local development
 
 ## 🎨 Theming
 
@@ -184,7 +214,30 @@ Forms use React Hook Form with Yup schemas for validation:
 
 Required environment variables:
 
-- `VITE_SERVER_URL` - Backend API base URL
+- `VITE_SERVER_URL` - Backend API base URL (e.g., `http://localhost:8080`)
+
+Optional environment variables:
+
+- `VITE_ENABLE_CREDENTIALS` - Set to `"true"` to enable credentials in production (automatically enabled in development)
+  - Requires backend to have proper CORS configuration:
+    - `Access-Control-Allow-Credentials: true`
+    - `Access-Control-Allow-Origin: <explicit-origin>` (not `*`)
+    - Proper headers and methods allowed
+
+### Development vs Production
+
+**Development Mode:**
+
+- Uses Vite proxy (`/api/*` → backend server)
+- `withCredentials` automatically enabled
+- No CORS issues (proxy handles it)
+- `SERVER_URL` is empty (uses relative URLs)
+
+**Production Mode:**
+
+- Uses full server URL from `VITE_SERVER_URL`
+- `withCredentials` only enabled if `VITE_ENABLE_CREDENTIALS=true`
+- Requires backend CORS configuration
 
 ## 🚦 Routing
 
